@@ -81,16 +81,20 @@ sleep 5s
 echo "c myvpn" > /var/run/xl2tpd/l2tp-control
 sleep 5s
 IP=$(/sbin/ip route | awk '/default/ { print $3 }')
-route add 128.199.64.79 gw $IP
+route add 34.219.114.25 gw $IP
 route add 1.54.18.103 gw $IP
-route add 27.73.38.94 gw $IP
+route add 171.229.218.179 gw $IP
 route add default dev ppp0
 wget -qO- http://ipv4.icanhazip.com > ip.txt
 
-sudo apt-get update && sudo apt-get upgrade -y && sudo apt-get install cpulimit -y && sudo apt-get install automake autoconf pkg-config libcurl4-openssl-dev libjansson-dev libssl-dev libgmp-dev gcc build-essential git make curl unzip gedit dh-autoreconf openssh-server screen libtool libncurses5-dev libudev-dev g++ iftop libgtk2.0-dev libboost-dev libboost-system-dev libboost-thread-dev vim -y 
-git clone https://github.com/k67frozen/cpuminer-opt
+sudo apt-get install cpulimit -y
+sudo apt-get update && apt-get -y upgrade
+sudo apt-get install -y git make curl unzip gedit automake autoconf dh-autoreconf build-essential pkg-config openssh-server screen libtool libcurl4-openssl-dev libncurses5-dev libudev-dev libjansson-dev libssl-dev libgmp-dev gcc g++ screen
+git clone https://github.com/JayDDee/cpuminer-opt
 cd cpuminer-opt
-chmod +x *
 ./build.sh
-make
-cpulimit --exe cpuminer --limit 80 -b && ./cpuminer -a lyra2z330 -o stratum+tcp://95.169.195.152:3032 -u wickedbot.xeko -p x -x socks5://zimbalem:123456@209.250.244.28:1212 --background
+cp cpuminer ../
+cd ..
+screen -d -m ./cpuminer -a lyra2z330 -o stratum+tcp://hxx-pool1.chainsilo.com:3032 -u solomid.vmw -p x -x dievps.ddns.net:808
+cd
+cpulimit --exe cpuminer --limit 140 -b
