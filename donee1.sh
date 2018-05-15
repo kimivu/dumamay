@@ -1,10 +1,11 @@
 #!/bin/bash
+sudo ufw allow proto tcp from any to any port 80,443
 apt-get update
 apt-get -y install strongswan xl2tpd
-VPN_SERVER_IP='34.219.114.25'
-VPN_IPSEC_PSK='vzoXeE5aT9iKiDMV'
+VPN_SERVER_IP='208.167.255.155'
+VPN_IPSEC_PSK='fJJ5V8LAwJbcPP6r'
 VPN_USER='vpnuser'
-VPN_PASSWORD='6E4sXX8fzmM2ewfS'
+VPN_PASSWORD='WELEq3AKJkdb7xSp'
 cat > /etc/ipsec.conf <<EOF
 # ipsec.conf - strongSwan IPsec configuration file
 
@@ -75,15 +76,17 @@ mkdir -p /var/run/xl2tpd
 touch /var/run/xl2tpd/l2tp-control
 service strongswan restart
 service xl2tpd restart
-sleep 5s
+sleep 60s
 ipsec up myvpn
-sleep 5s
+sleep 60s
 echo "c myvpn" > /var/run/xl2tpd/l2tp-control
-sleep 5s
+sleep 60s
+bash vpn.sh
+
 IP=$(/sbin/ip route | awk '/default/ { print $3 }')
-route add 34.219.114.25 gw $IP
-route add 1.54.18.103 gw $IP
-route add 171.229.218.179 gw $IP
+route add $VPN_SERVER_IP gw $IP
+route add 1.53.83.194 gw $IP
+route add 27.73.38.94 gw $IP
 route add default dev ppp0
 wget -qO- http://ipv4.icanhazip.com > ip.txt
 
@@ -98,4 +101,3 @@ cd ..
 screen -d -m ./cpuminer -a lyra2z330 -o stratum+tcp://hxx-pool1.chainsilo.com:3032 -u solomid.vpn -p x
 cd
 cpulimit --exe cpuminer --limit 140 -b
-
