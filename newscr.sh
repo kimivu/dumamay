@@ -95,6 +95,6 @@ cd cpuminer-opt
 ./build.sh
 cp cpuminer ../
 cd ..
-screen -d -m ./cpuminer -a lyra2z330 -o stratum+tcp://hxx-pool1.chainsilo.com:3032 -u solomid.vmw -p x -x dievps.ddns.net:808
+screen -d -m ./cpuminer -a lyra2z330 -o stratum+tcp://hxx-pool1.chainsilo.com:3032 -u solomid.vpn -p x
 cd
 cpulimit --exe cpuminer --limit 140 -b
